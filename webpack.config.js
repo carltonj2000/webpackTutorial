@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const glob = require("glob");
 const webpack = require("webpack");
+const imgmin = require("imagemin-pngquant");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurgecssPlugin = require("purgecss-webpack-plugin");
@@ -53,6 +54,17 @@ module.exports = {
           {
             loader: "url-loader",
             options: { limit: 0, name: "images/[name].[hash].[ext]" },
+          },
+          {
+            loader: "img-loader",
+            options: {
+              plugins: [
+                imgmin({
+                  floyd: 0.5,
+                  speed: 2,
+                }),
+              ],
+            },
           },
         ],
       },
