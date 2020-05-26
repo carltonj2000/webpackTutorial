@@ -7,6 +7,7 @@ const imgmin = require("imagemin-pngquant");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurgecssPlugin = require("purgecss-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BuildManifestPlugin = require("./build/plugins/BuildManifestPlugin");
 
 const inProduction = process.env.NODE_ENV === "production";
 
@@ -82,11 +83,12 @@ module.exports = {
     function () {
       this.plugin("done", (stats) => {
         fs.writeFileSync(
-          path.join(__dirname, "dist", "mainfest.json"),
+          path.join(__dirname, "dist", "manifest.json"),
           JSON.stringify(stats.toJson().assetsByChunkName, null, 2)
         );
       });
     },
+    new BuildManifestPlugin(),
   ],
 };
 
